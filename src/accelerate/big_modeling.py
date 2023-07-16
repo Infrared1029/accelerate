@@ -110,7 +110,7 @@ def init_on_device(device: torch.device, include_buffers: bool = False):
             module._buffers[name] = module._buffers[name].to(device)
 
     # Patch tensor creation
-    if include_buffers:
+    if include_buffers or device==torch.device("meta"):
         tensor_constructors_to_patch = {
             torch_function_name: getattr(torch, torch_function_name)
             for torch_function_name in ["empty", "zeros", "ones", "full"]
